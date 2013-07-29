@@ -1,4 +1,4 @@
-package me.kieranwallbanks.jmodules;
+package main.java.jmodules;
 
 /**
  * Represents a {@link Runnable} to be run when the {@link ModuleManager} finds a module that extends or implements a class

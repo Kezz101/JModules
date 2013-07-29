@@ -1,4 +1,4 @@
-package me.kieranwallbanks.jmodules;
+package main.java.jmodules;
 
 /**
  * Represents a module

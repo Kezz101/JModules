@@ -1,4 +1,4 @@
-package me.kieranwallbanks.jmodules;
+package main.java.jmodules;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import me.kieranwallbanks.jmodules.util.ReflectionsUtilities;
+import main.java.jmodules.util.ReflectionsUtilities;
 
 /**
  * The main point of entry into the JModules library

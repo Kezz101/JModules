@@ -1,4 +1,4 @@
-package me.kieranwallbanks.jmodules.util;
+package main.java.jmodules.util;
 
 import java.io.File;
 import java.io.IOException;

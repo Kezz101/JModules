@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>me.kieranwallbanks</groupId>
   <artifactId>JModules</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.0</version>
   <name>JModules</name>
   <description>A simple module framework for Java</description>
   <build>

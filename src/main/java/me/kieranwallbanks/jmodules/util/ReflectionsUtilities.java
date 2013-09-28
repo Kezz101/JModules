@@ -1,10 +1,11 @@
-package main.java.jmodules.util;
+package me.kieranwallbanks.jmodules.util;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.jar.JarEntry;
@@ -20,17 +21,19 @@ public class ReflectionsUtilities {
      *
      * @param packageName the name of the package
      * @param classLoader the {@link ClassLoader} to find the package in
+     *
      * @return a list containing the names of all classes in a package
+     *
      * @throws IOException if an error occurred whilst getting the package information
      */
     public static List<String> getClassNamesFromPackage(String packageName, ClassLoader classLoader) throws IOException {
         URL packageURL;
-        ArrayList<String> names = new ArrayList<String>();;
+        ArrayList<String> names = new ArrayList<>();
 
         packageName = packageName.replace(".", "/");
         packageURL = classLoader.getResource(packageName);
 
-        if(packageURL.getProtocol().equals("jar")) { // Loop through all things in the jar
+        if(packageURL != null && packageURL.getProtocol().equals("jar")) { // Loop through all things in the jar
             String jarFileName;
             JarFile jf ;
             Enumeration<JarEntry> jarEntries;
@@ -47,13 +50,15 @@ public class ReflectionsUtilities {
                 }
             }
             jf.close();
-        } else { // Otherwise loop through all things in the classpath
+        } else if(packageURL != null) { // Otherwise loop through all things in the classpath
             File folder = new File(packageURL.getFile());
-            File[] contenuti = folder.listFiles();
+            File[] content = folder.listFiles();
             String entryName;
-            for(File actual: contenuti){
-                entryName = actual.getName();
-                names.add(entryName.replace(".class", "").replace('/', '.'));
+            if (content != null) {
+                for(File file : content) {
+                    entryName = file.getName();
+                    names.add(entryName.replace(".class", "").replace('/', '.'));
+                }
             }
         }
 
@@ -73,12 +78,12 @@ public class ReflectionsUtilities {
     public static <T> List<Class<? extends T>> getSubtypesOf(Class<T> clazz, String packagee, ClassLoader classLoader, Class<?>... ignore) throws Exception {
         List<Class<? extends T>> returnMe = new ArrayList<>();
         List<Class<?>> ignores = new ArrayList<>();
-        ignores.addAll(ignores);
+        ignores.addAll(Arrays.asList(ignore));
 
         for(String str : getClassNamesFromPackage(packagee, classLoader)) {
             Class<?> indi = Class.forName(str.replace(".class", ""));
             if(clazz.isAssignableFrom(indi) && !ignores.contains(indi)) {
-                @SuppressWarnings("unchecked") Class<? extends T> extended = (Class<? extends T>) indi;
+                @SuppressWarnings("unchecked cast") Class<? extends T> extended = (Class<? extends T>) indi;
                 returnMe.add(extended);
             }
         }

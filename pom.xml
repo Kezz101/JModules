@@ -2,8 +2,8 @@
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>me.kieranwallbanks</groupId>
-    <artifactId>JModules</artifactId>
-    <version>1.0</version>
+    <artifactId>jmodules</artifactId>
+    <version>1.1</version>
     <name>JModules</name>
     <description>A simple module framework for Java</description>
 
@@ -11,9 +11,17 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.11</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
     <build>
         <finalName>${project.artifactId} v${project.version}</finalName>
-        <sourceDirectory>src</sourceDirectory>
 
         <plugins>
             <plugin>

@@ -1,12 +1,8 @@
-package main.java.jmodules;
+package me.kieranwallbanks.jmodules;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import me.kieranwallbanks.jmodules.util.ReflectionsUtilities;
 
-import main.java.jmodules.util.ReflectionsUtilities;
+import java.util.*;
 
 /**
  * The main point of entry into the JModules library
@@ -84,7 +80,7 @@ public class ModuleManager {
         for(Class<? extends Module> clazz : ReflectionsUtilities.getSubtypesOf(Module.class, packageName, classLoader, ignores)) {
             try {
                 modules.add(clazz.newInstance());
-            } catch(InstantiationException e) { } // We'll just ignore this error
+            } catch(InstantiationException ignored) { } // We'll just ignore this error
         }
     }
 

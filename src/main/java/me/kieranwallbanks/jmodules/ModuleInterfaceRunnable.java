@@ -1,4 +1,4 @@
-package main.java.jmodules;
+package me.kieranwallbanks.jmodules;
 
 /**
  * Represents a {@link Runnable} to be run when the {@link ModuleManager} finds a module that extends or implements a class
@@ -27,7 +27,7 @@ public abstract class ModuleInterfaceRunnable {
     /**
      * The runnable to be run when the {@link ModuleManager} finds a module that extends or implements the class
      *
-     * @param clazz the module that the ModuleManager found
+     * @param module the module that the ModuleManager found
      */
     public abstract void run(Module module);
 

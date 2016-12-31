@@ -3,8 +3,8 @@
 [![Current Version](https://img.shields.io/github/release/qubyte/rubidium.svg)](https://github.com/Kezz101/JModules/releases)
 [![Build Status](https://img.shields.io/travis/Kezz101/JModules/master.svg)](https://travis-ci.org/Kezz101/JModules)
 [![Total Downloads](https://img.shields.io/github/downloads/Kezz101/JModules/total.svg)](https://github.com/Kezz101/JModules/releases)
-[![Issues](https://img.shields.io/github/issues-raw/badges/shields.svg)](https://github.com/Kezz101/JModules/issues)
-[![License](https://img.shields.io/github/license/mashape/apistatus.svg)](LICENSE.md)
+[![Issues](https://img.shields.io/github/issues/Kezz101/JModules.svg)](https://github.com/Kezz101/JModules/issues)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE.md)
 
 
 A simple module framework for Java

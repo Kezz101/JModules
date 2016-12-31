@@ -68,6 +68,7 @@ public class ReflectionsUtilities {
     /**
      * Gets all subtypes of a specified class in a package
      *
+     * @param <T> type of class to get subtypes of
      * @param clazz the class to find subtypes of
      * @param packagee the package to search in
      * @param classLoader the {@link ClassLoader} to find the package in

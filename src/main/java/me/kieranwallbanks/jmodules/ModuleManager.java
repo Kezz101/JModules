@@ -42,7 +42,7 @@ public class ModuleManager {
     }
 
     /**
-     * Calls {@link Module#onDisable()()} for all modules
+     * Calls {@link Module#onDisable()} for all modules
      */
     public void disableModules() {
         for(Module module : modules) {
@@ -73,6 +73,7 @@ public class ModuleManager {
      *
      * @param packageName the name of the package
      * @param classLoader the {@link ClassLoader} to find the package in
+     * @param ignores a list of classes to ignore if they are found
      *
      * @throws Exception if an error occurred during the lookup of these classes
      */

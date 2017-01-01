@@ -2,7 +2,9 @@ package me.kieranwallbanks.jmodules.util;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.net.URL;
+import java.net.URLClassLoader;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -82,7 +84,7 @@ public class ReflectionsUtilities {
         ignores.addAll(Arrays.asList(ignore));
 
         for(String str : getClassNamesFromPackage(packagee, classLoader)) {
-            Class<?> indi = Class.forName(str.replace(".class", ""));
+            Class<?> indi = Class.forName(packagee + "." + str.replace(".class", ""));
             if(clazz.isAssignableFrom(indi) && !ignores.contains(indi)) {
                 @SuppressWarnings("unchecked cast") Class<? extends T> extended = (Class<? extends T>) indi;
                 returnMe.add(extended);
@@ -91,4 +93,26 @@ public class ReflectionsUtilities {
         return returnMe;
     }
 
+    /**
+     * Adds a file to a classpath
+     *
+     * @param classPath the classpath
+     * @param file the file
+     * @throws Exception if an error occurred while adding the class to the classpath
+     */
+    public static void addFileToClasspath(ClassLoader classPath, File file) throws Exception {
+        Method method = URLClassLoader.class.getDeclaredMethod("addURL", URL.class);
+        method.setAccessible(true);
+        method.invoke(classPath, file.toURI().toURL());
+    }
+
+    /**
+     * Adds a file to the system's classpath
+     *
+     * @param file the file
+     * @throws Exception if an error occurred while adding the class to the classpath
+     */
+    public static void addFileToClasspath(File file) throws Exception {
+        addFileToClasspath(ClassLoader.getSystemClassLoader(), file);
+    }
 }

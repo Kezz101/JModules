@@ -40,6 +40,33 @@ public class MyModule implements Module {
 }
 ````
 
+You can also define a custom name for a module and define other modules that this module depends on.
+
+````java
+public class MyAdvancedModule implements Module {
+    
+    @Override
+    public void onEnable() {
+        // do some enabling
+    }
+    
+    @Override
+    public void onDisable() {
+        // do some disabling
+    }
+    
+    @Override
+    public String getName() {
+        return "CustomName";
+    }
+       
+    @Override
+    public String[] getDependencies() {
+        return new String[]{"MyModule"};
+    }
+}
+````
+
 ### Creating a `ModuleManager`
 The `ModuleManager` class is the main class used in JModules. Firstly, you need to create your own instance of the `ModuleManager` like so:
 

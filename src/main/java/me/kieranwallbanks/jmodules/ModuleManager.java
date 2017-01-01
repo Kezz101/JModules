@@ -9,7 +9,7 @@ import java.util.*;
  */
 public class ModuleManager {
     private Map<Class<?>, ModuleInterfaceRunnable> runnableMap = new HashMap<>();
-    private Set<Module> modules = new HashSet<>();
+    private Map<String, Module> modules = new HashMap<>();
 
     /**
      * Constructs a new {@link ModuleManager}
@@ -26,7 +26,7 @@ public class ModuleManager {
      * Calls {@link Module#onEnable()} for all modules and runs any {@link ModuleInterfaceRunnable}s if needed
      */
     public void enableModules() {
-        for(Module module : modules) {
+        for(Module module : modules.values()) {
             for(Class<?> interfacee : module.getClass().getInterfaces()) {
                 if(runnableMap.get(interfacee) != null) {
                     runnableMap.get(interfacee).run(module);
@@ -45,7 +45,7 @@ public class ModuleManager {
      * Calls {@link Module#onDisable()} for all modules
      */
     public void disableModules() {
-        for(Module module : modules) {
+        for(Module module : modules.values()) {
             module.onDisable();
         }
     }
@@ -56,7 +56,7 @@ public class ModuleManager {
      * @param module the module
      */
     public void addModule(Module module) {
-        modules.add(module);
+        modules.put(module.getName(), module);
     }
 
     /**
@@ -65,7 +65,9 @@ public class ModuleManager {
      * @param modules a {@link Collection} of modules
      */
     public void addModules(Collection<Module> modules) {
-        this.modules.addAll(modules);
+        for (Module module : modules) {
+            this.modules.put(module.getName(), module);
+        }
     }
 
     /**
@@ -80,9 +82,17 @@ public class ModuleManager {
     public void addModulesFromPackage(String packageName, ClassLoader classLoader, Class<?>... ignores) throws Exception {
         for(Class<? extends Module> clazz : ReflectionsUtilities.getSubtypesOf(Module.class, packageName, classLoader, ignores)) {
             try {
-                modules.add(clazz.newInstance());
+                Module module = clazz.newInstance();
+                modules.put(module.getName(), module);
             } catch(InstantiationException ignored) { } // We'll just ignore this error
         }
     }
 
+    /**
+     * Gets an unmodifiable collection of all modules currently loaded
+     * @return the collection of modules
+     */
+    public Collection<Module> getModules() {
+        return Collections.unmodifiableCollection(modules.values());
+    }
 }

@@ -5,7 +5,20 @@ package me.kieranwallbanks.jmodules;
  */
 public interface Module {
 
-    public void onEnable();
-    public void onDisable();
+    /**
+     * Called when the module is enabled
+     */
+    void onEnable();
 
+    /**
+     * Called when the module is disabled
+     */
+    void onDisable();
+
+    /**
+     * Gets the name of the module. Defaults to {@link Class#getSimpleName()}.
+     */
+    default String getName() {
+        return null;
+    }
 }

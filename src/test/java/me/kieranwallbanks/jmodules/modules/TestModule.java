@@ -1,10 +1,13 @@
-package me.kieranwallbanks.jmodules;
+package me.kieranwallbanks.jmodules.modules;
+
+import me.kieranwallbanks.jmodules.Module;
+import me.kieranwallbanks.jmodules.ModuleTest;
 
 public class TestModule implements Module {
 
     @Override
     public void onEnable() {
-        ModuleTests.enabled = true;
+        ModuleTest.enabled = true;
 
         System.out.println("TestModule enabled");
     }

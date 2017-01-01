@@ -1,6 +1,8 @@
 package me.kieranwallbanks.jmodules;
 
 import me.kieranwallbanks.jmodules.util.ReflectionsUtilities;
+import org.jgrapht.experimental.dag.DirectedAcyclicGraph;
+import org.jgrapht.graph.DefaultEdge;
 
 import java.util.*;
 
@@ -10,6 +12,8 @@ import java.util.*;
 public class ModuleManager {
     private Map<Class<?>, ModuleInterfaceRunnable> runnableMap = new HashMap<>();
     private Map<String, Module> modules = new HashMap<>();
+    private boolean enabled = false;
+    private List<Module> loadOrder;
 
     /**
      * Constructs a new {@link ModuleManager}
@@ -26,18 +30,24 @@ public class ModuleManager {
      * Calls {@link Module#onEnable()} for all modules and runs any {@link ModuleInterfaceRunnable}s if needed
      */
     public void enableModules() {
-        for(Module module : modules.values()) {
-            for(Class<?> interfacee : module.getClass().getInterfaces()) {
-                if(runnableMap.get(interfacee) != null) {
-                    runnableMap.get(interfacee).run(module);
+        if (!enabled) {
+            reloadOrderList();
+
+            for (Module module : loadOrder) {
+                for (Class<?> interfacee : module.getClass().getInterfaces()) {
+                    if (runnableMap.get(interfacee) != null) {
+                        runnableMap.get(interfacee).run(module);
+                    }
                 }
+
+                if (runnableMap.get(module.getClass().getSuperclass()) != null) {
+                    runnableMap.get(module.getClass().getSuperclass()).run(module);
+                }
+
+                module.onEnable();
             }
 
-            if(runnableMap.get(module.getClass().getSuperclass()) != null) {
-                runnableMap.get(module.getClass().getSuperclass()).run(module);
-            }
-
-            module.onEnable();
+            enabled = true;
         }
     }
 
@@ -45,8 +55,12 @@ public class ModuleManager {
      * Calls {@link Module#onDisable()} for all modules
      */
     public void disableModules() {
-        for(Module module : modules.values()) {
-            module.onDisable();
+        if (enabled) {
+            Collections.reverse(loadOrder);
+
+            for (Module module : loadOrder) {
+                module.onDisable();
+            }
         }
     }
 
@@ -56,7 +70,9 @@ public class ModuleManager {
      * @param module the module
      */
     public void addModule(Module module) {
-        modules.put(module.getName(), module);
+        if (!enabled) {
+            modules.put(module.getName(), module);
+        }
     }
 
     /**
@@ -66,7 +82,7 @@ public class ModuleManager {
      */
     public void addModules(Collection<Module> modules) {
         for (Module module : modules) {
-            this.modules.put(module.getName(), module);
+            addModule(module);
         }
     }
 
@@ -83,7 +99,7 @@ public class ModuleManager {
         for(Class<? extends Module> clazz : ReflectionsUtilities.getSubtypesOf(Module.class, packageName, classLoader, ignores)) {
             try {
                 Module module = clazz.newInstance();
-                modules.put(module.getName(), module);
+                addModule(module);
             } catch(InstantiationException ignored) { } // We'll just ignore this error
         }
     }
@@ -94,5 +110,37 @@ public class ModuleManager {
      */
     public Collection<Module> getModules() {
         return Collections.unmodifiableCollection(modules.values());
+    }
+
+    /**
+     * Checks if the modules are enabled yet
+     * @return {@code true} if the modules are enabled
+     */
+    public boolean areModulesEnabled() {
+        return enabled;
+    }
+
+    private void reloadOrderList() {
+        DirectedAcyclicGraph<Module, DefaultEdge> dag = new DirectedAcyclicGraph<>(DefaultEdge.class);
+
+        // add all the modules to the dag
+        for (Module module : modules.values()) {
+            dag.addVertex(module);
+        }
+
+        // add all the dependencies to the dag
+        for (Module module : modules.values()) {
+            if (module.getDependencies() != null) {
+                for (String dependsOn : module.getDependencies()) {
+                    if (modules.containsKey(dependsOn)) {
+                        dag.addEdge(modules.get(dependsOn), module);
+                    }
+                }
+            }
+        }
+
+        // setup the order list
+        loadOrder = new ArrayList<>(dag.vertexSet().size());
+        dag.forEach(loadOrder::add);
     }
 }

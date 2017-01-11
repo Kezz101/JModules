@@ -1,6 +1,7 @@
 # JModules
 
 [![Current Version](https://img.shields.io/github/release/Kezz101/JModules.svg)](https://github.com/Kezz101/JModules/releases)
+[![Maven Central](https://img.shields.io/maven-central/v/me.kieranwallbanks/jmodules.svg)](https://mvnrepository.com/artifact/me.kieranwallbanks/jmodules)
 [![Build Status](https://img.shields.io/travis/Kezz101/JModules/master.svg)](https://travis-ci.org/Kezz101/JModules)
 [![Total Downloads](https://img.shields.io/github/downloads/Kezz101/JModules/total.svg)](https://github.com/Kezz101/JModules/releases)
 [![Issues](https://img.shields.io/github/issues/Kezz101/JModules.svg)](https://github.com/Kezz101/JModules/issues)

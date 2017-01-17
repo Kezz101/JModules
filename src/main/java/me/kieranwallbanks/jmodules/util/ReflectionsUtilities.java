@@ -84,7 +84,11 @@ public class ReflectionsUtilities {
         ignores.addAll(Arrays.asList(ignore));
 
         for(String str : getClassNamesFromPackage(packagee, classLoader)) {
-            Class<?> indi = Class.forName(packagee + "." + str.replace(".class", ""));
+            if (!str.startsWith(packagee)) {
+                str = packagee + "." + str;
+            }
+
+            Class<?> indi = Class.forName(str.replace(".class", ""));
             if(clazz.isAssignableFrom(indi) && !ignores.contains(indi)) {
                 @SuppressWarnings("unchecked cast") Class<? extends T> extended = (Class<? extends T>) indi;
                 returnMe.add(extended);
